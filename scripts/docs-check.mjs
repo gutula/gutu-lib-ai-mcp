@@ -23,13 +23,19 @@ for (const doc of requiredDocs) {
 }
 
 const readme = fs.readFileSync(path.join(root, "README.md"), "utf8");
-for (const heading of ["## What It Does Now", "## Maturity", "## Verified API Summary", "## Capability Matrix", "## Current Test Coverage", "## Recommended Next Milestones"]) {
+for (const heading of ["## Part Of The Gutu Stack", "## What It Does Now", "## Maturity", "## Verified API Summary", "## Capability Matrix", "## Current Test Coverage", "## Recommended Next Milestones"]) {
   if (!readme.includes(heading)) {
     failures.push(`README.md is missing heading '${heading}'.`);
   }
 }
 if ((readme.match(/https:\/\/img\.shields\.io\/badge\//g) || []).length < 4) {
   failures.push("README.md is missing the required local badge block.");
+}
+if (!readme.includes("./docs/assets/gutu-mascot.png")) {
+  failures.push("README.md is missing the mascot image reference.");
+}
+if (!fs.existsSync(path.join(root, "docs", "assets", "gutu-mascot.png"))) {
+  failures.push("docs/assets/gutu-mascot.png is missing.");
 }
 
 const developer = fs.readFileSync(path.join(root, "DEVELOPER.md"), "utf8");
