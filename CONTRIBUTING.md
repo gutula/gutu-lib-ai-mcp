@@ -1,12 +1,12 @@
 # Contributing
 
-This repository is the clean `gutu-core` baseline.
+This repository is a standalone first-party Gutu package repo.
 
 ## Rules
 
-- Keep plugin source code out of this repository.
-- Put historical or displaced content in `old_contents/`, not back into root.
-- Keep docs, status ledgers, and implementation state aligned in the same change.
+- Keep package manifests, exports, docs, and verification lanes aligned in the same change.
+- Keep cross-repo integration explicit through declared contracts and published package boundaries rather than hidden workspace-only coupling.
+- Update `README.md`, `DEVELOPER.md`, `TODO.md`, and `SECURITY.md` whenever shipped behavior or operational boundaries change.
 
 ## Verification
 
@@ -14,5 +14,9 @@ Run:
 
 ```bash
 bun install
-bun run ci
+bun run docs:check
+bun run build
+bun run typecheck
+bun run lint
+bun run test
 ```

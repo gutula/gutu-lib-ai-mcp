@@ -4,8 +4,13 @@ import { defineAction, defineResource } from "@platform/schema";
 import { z } from "zod";
 
 import {
+  createMcpRuntimeOrchestrator,
+  createSchemaCacheEntry,
   createMcpRuntimeServer,
   dispatchMcpMessage,
+  evaluateConnectorHealth,
+  filterMcpTools,
+  planMcpConnection,
   type McpSessionState
 } from "../../src";
 
@@ -140,5 +145,100 @@ describe("ai-mcp runtime", () => {
     expect(resourceRead && !Array.isArray(resourceRead) && "result" in resourceRead && JSON.stringify(resourceRead.result)).toContain("curatedReadModel");
     expect(prompts && !Array.isArray(prompts) && "result" in prompts && JSON.stringify(prompts.result)).toContain("prompt-version:crm-review:v1");
     expect(prompt && !Array.isArray(prompt) && "result" in prompt && JSON.stringify(prompt.result)).toContain("Review record contact-123");
+  });
+
+  it("filters multi-server tools and evaluates connector plans and schema cache health", () => {
+    const orchestrator = createMcpRuntimeOrchestrator({
+      connectors: [
+        {
+          id: "connector:crm",
+          label: "CRM",
+          endpoint: "https://crm.example.com/mcp",
+          transport: "streamable-http",
+          connectionMode: "on-demand",
+          hostAllowlist: ["crm.example.com"],
+          trustTier: "first-party",
+          requiresApproval: true,
+          serverIds: ["crm-server"],
+          allowedToolIds: ["crm.contacts.lookup"],
+          deniedToolIds: ["crm.contacts.delete"]
+        }
+      ],
+      servers: [
+        {
+          id: "crm-server",
+          label: "CRM Server",
+          tools: [
+            {
+              id: "crm.contacts.lookup",
+              title: "Lookup",
+              description: "Lookup a contact",
+              permission: "crm.contacts.lookup",
+              inputSchema: { type: "object" },
+              outputSchema: { type: "object" },
+              riskLevel: "low",
+              approvalMode: "none"
+            },
+            {
+              id: "crm.contacts.delete",
+              title: "Delete",
+              description: "Delete a contact",
+              permission: "crm.contacts.delete",
+              inputSchema: { type: "object" },
+              outputSchema: { type: "object" },
+              riskLevel: "high",
+              approvalMode: "required"
+            }
+          ],
+          resources: [],
+          prompts: []
+        }
+      ]
+    });
+
+    const visibleWithoutApproval = orchestrator.listVisibleTools("crm.example.com", false);
+    const visibleWithApproval = orchestrator.listVisibleTools("crm.example.com", true);
+    const cache = createSchemaCacheEntry({
+      connectorId: "connector:crm",
+      serverId: "crm-server",
+      tools: visibleWithApproval,
+      fetchedAt: "2026-04-22T12:00:00.000Z",
+      ttlMinutes: 30
+    });
+    const healthy = evaluateConnectorHealth({
+      connector: {
+        id: "connector:crm",
+        label: "CRM",
+        endpoint: "https://crm.example.com/mcp",
+        transport: "streamable-http",
+        hostAllowlist: ["crm.example.com"],
+        trustTier: "first-party",
+        requiresApproval: false,
+        allowedToolIds: ["crm.contacts.lookup"]
+      },
+      targetHost: "crm.example.com",
+      schemaCache: cache,
+      approvalGranted: true
+    });
+    const plan = planMcpConnection(
+      {
+        id: "connector:crm",
+        label: "CRM",
+        endpoint: "https://crm.example.com/mcp",
+        transport: "streamable-http",
+        hostAllowlist: ["crm.example.com"],
+        trustTier: "first-party",
+        requiresApproval: true
+      },
+      "crm.example.com",
+      true
+    );
+
+    expect(visibleWithoutApproval).toEqual([]);
+    expect(filterMcpTools(visibleWithApproval, { allowedToolIds: ["crm.contacts.lookup"], deniedToolIds: [] })).toHaveLength(1);
+    expect(visibleWithApproval[0]?.id).toBe("crm.contacts.lookup");
+    expect(plan.blocked).toBe(false);
+    expect(healthy.status).toBe("ready");
+    expect(cache.toolIds).toEqual(["crm.contacts.lookup"]);
   });
 });

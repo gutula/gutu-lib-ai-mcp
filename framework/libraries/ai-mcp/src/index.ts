@@ -100,11 +100,43 @@ export type McpClientConnector = {
   id: string;
   label: string;
   endpoint: string;
+  transport?: "stdio" | "sse" | "streamable-http" | undefined;
+  connectionMode?: "on-demand" | "persistent" | undefined;
   hostAllowlist: string[];
   trustTier: "first-party" | "partner" | "unknown";
   secretRef?: string | undefined;
   requiresApproval: boolean;
+  schemaCacheTtlMinutes?: number | undefined;
+  headers?: Record<string, string> | undefined;
+  serverIds?: string[] | undefined;
+  deniedToolIds?: string[] | undefined;
   allowedToolIds?: string[] | undefined;
+};
+
+export type McpConnectorHealth = {
+  connectorId: string;
+  status: "ready" | "degraded" | "blocked";
+  reason?: string | undefined;
+  checkedAt: string;
+};
+
+export type McpSchemaCacheEntry = {
+  connectorId: string;
+  serverId: string;
+  toolIds: string[];
+  schemaHash: string;
+  fetchedAt: string;
+  expiresAt: string | null;
+};
+
+export type McpConnectionPlan = {
+  connectorId: string;
+  transport: "stdio" | "sse" | "streamable-http";
+  mode: "on-demand" | "persistent";
+  approved: boolean;
+  blocked: boolean;
+  endpoint: string;
+  reason?: string | undefined;
 };
 
 export function defineMcpServer(definition: McpServerDefinition): McpServerDefinition {
@@ -119,8 +151,141 @@ export function defineMcpServer(definition: McpServerDefinition): McpServerDefin
 export function defineMcpClientConnector(connector: McpClientConnector): McpClientConnector {
   return Object.freeze({
     ...connector,
+    transport: connector.transport ?? "stdio",
+    connectionMode: connector.connectionMode ?? "on-demand",
     hostAllowlist: [...connector.hostAllowlist].sort((left, right) => left.localeCompare(right)),
+    ...(connector.serverIds ? { serverIds: [...connector.serverIds].sort((left, right) => left.localeCompare(right)) } : {}),
+    ...(connector.deniedToolIds ? { deniedToolIds: [...connector.deniedToolIds].sort((left, right) => left.localeCompare(right)) } : {}),
     ...(connector.allowedToolIds ? { allowedToolIds: [...connector.allowedToolIds].sort((left, right) => left.localeCompare(right)) } : {})
+  });
+}
+
+export function filterMcpTools(
+  tools: McpToolDescriptor[],
+  connector: Pick<McpClientConnector, "allowedToolIds" | "deniedToolIds">
+): McpToolDescriptor[] {
+  const allowlist = new Set(connector.allowedToolIds ?? []);
+  const denylist = new Set(connector.deniedToolIds ?? []);
+  return tools.filter((tool) => {
+    if (denylist.has(tool.id)) {
+      return false;
+    }
+    if (allowlist.size === 0) {
+      return true;
+    }
+    return allowlist.has(tool.id);
+  });
+}
+
+export function planMcpConnection(connector: McpClientConnector, targetHost: string, approvalGranted = false): McpConnectionPlan {
+  const normalizedConnector = defineMcpClientConnector(connector);
+  const hostAllowed =
+    normalizedConnector.hostAllowlist.length === 0 ||
+    normalizedConnector.hostAllowlist.includes(targetHost) ||
+    normalizedConnector.hostAllowlist.includes("*");
+  const approved = !normalizedConnector.requiresApproval || approvalGranted;
+  const blocked = !hostAllowed || !approved;
+
+  return Object.freeze({
+    connectorId: normalizedConnector.id,
+    transport: normalizedConnector.transport ?? "stdio",
+    mode: normalizedConnector.connectionMode ?? "on-demand",
+    approved,
+    blocked,
+    endpoint: normalizedConnector.endpoint,
+    ...(blocked
+      ? {
+          reason: !hostAllowed ? `host ${targetHost} is not allowed` : "approval required before connector use"
+        }
+      : {})
+  });
+}
+
+export function createSchemaCacheEntry(input: {
+  connectorId: string;
+  serverId: string;
+  tools: McpToolDescriptor[];
+  fetchedAt?: string | Date | undefined;
+  ttlMinutes?: number | undefined;
+}): McpSchemaCacheEntry {
+  const fetchedAt = normalizeTimestamp(input.fetchedAt ?? new Date());
+  const schemaHash = JSON.stringify(
+    [...input.tools]
+      .sort((left, right) => left.id.localeCompare(right.id))
+      .map((tool) => ({
+        id: tool.id,
+        inputSchema: tool.inputSchema,
+        outputSchema: tool.outputSchema
+      }))
+  );
+
+  return Object.freeze({
+    connectorId: input.connectorId,
+    serverId: input.serverId,
+    toolIds: input.tools.map((tool) => tool.id).sort((left, right) => left.localeCompare(right)),
+    schemaHash,
+    fetchedAt,
+    expiresAt:
+      input.ttlMinutes && input.ttlMinutes > 0
+        ? new Date(new Date(fetchedAt).getTime() + input.ttlMinutes * 60_000).toISOString()
+        : null
+  });
+}
+
+export function evaluateConnectorHealth(input: {
+  connector: McpClientConnector;
+  targetHost: string;
+  schemaCache?: McpSchemaCacheEntry | undefined;
+  approvalGranted?: boolean | undefined;
+}): McpConnectorHealth {
+  const plan = planMcpConnection(input.connector, input.targetHost, input.approvalGranted ?? false);
+  if (plan.blocked) {
+    return {
+      connectorId: input.connector.id,
+      status: "blocked",
+      reason: plan.reason,
+      checkedAt: normalizeTimestamp(new Date())
+    };
+  }
+
+  const cacheExpired =
+    input.schemaCache?.expiresAt !== null &&
+    input.schemaCache?.expiresAt !== undefined &&
+    new Date(input.schemaCache.expiresAt).getTime() <= Date.now();
+  return {
+    connectorId: input.connector.id,
+    status: cacheExpired ? "degraded" : "ready",
+    ...(cacheExpired ? { reason: "schema cache expired" } : {}),
+    checkedAt: normalizeTimestamp(new Date())
+  };
+}
+
+export function createMcpRuntimeOrchestrator(input: {
+  connectors: McpClientConnector[];
+  servers: McpServerDefinition[];
+}) {
+  const connectors = input.connectors.map((connector) => defineMcpClientConnector(connector));
+  const serversById = new Map(input.servers.map((server) => [server.id, server]));
+
+  return Object.freeze({
+    connectors,
+    listVisibleTools(targetHost: string, approvalGranted = false) {
+      return connectors.flatMap((connector) => {
+        const health = evaluateConnectorHealth({
+          connector,
+          targetHost,
+          approvalGranted
+        });
+        if (health.status === "blocked") {
+          return [];
+        }
+        const visibleServers =
+          connector.serverIds && connector.serverIds.length > 0
+            ? connector.serverIds.map((id) => serversById.get(id)).filter((server): server is McpServerDefinition => Boolean(server))
+            : input.servers;
+        return visibleServers.flatMap((server) => filterMcpTools(server.tools, connector));
+      });
+    }
   });
 }
 
@@ -542,4 +707,8 @@ function writeStream(
   chunk: string
 ): void {
   stream?.write(chunk);
+}
+
+function normalizeTimestamp(value: string | Date): string {
+  return value instanceof Date ? value.toISOString() : new Date(value).toISOString();
 }
