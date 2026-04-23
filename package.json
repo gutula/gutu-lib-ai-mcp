@@ -6,11 +6,11 @@
     "framework/libraries/*"
   ],
   "scripts": {
-    "build": "bun --cwd framework/libraries/ai-mcp run build",
-    "typecheck": "bun --cwd framework/libraries/ai-mcp run typecheck",
-    "lint": "bun --cwd framework/libraries/ai-mcp run lint",
-    "test": "bun --cwd framework/libraries/ai-mcp run test",
-    "test:unit": "bun --cwd framework/libraries/ai-mcp run test:unit",
+    "build": "bun run --cwd framework/libraries/ai-mcp build",
+    "typecheck": "bun run --cwd framework/libraries/ai-mcp typecheck",
+    "lint": "bun run --cwd framework/libraries/ai-mcp lint",
+    "test": "bun run --cwd framework/libraries/ai-mcp test",
+    "test:unit": "bun run --cwd framework/libraries/ai-mcp test:unit",
     "docs:summary": "node scripts/docs-summary.mjs",
     "docs:check": "node scripts/docs-check.mjs"
   }

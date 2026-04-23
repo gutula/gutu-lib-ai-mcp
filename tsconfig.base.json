@@ -8,13 +8,584 @@
     "exactOptionalPropertyTypes": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
-    "types": ["bun-types"],
+    "types": [
+      "bun-types",
+      "react",
+      "react-dom"
+    ],
     "baseUrl": ".",
     "paths": {
-      "@gutu/kernel": ["framework/core/kernel/src/index.ts"],
-      "@gutu/ecosystem": ["framework/core/ecosystem/src/index.ts"],
-      "@gutu/cli": ["framework/core/cli/src/index.ts"],
-      "@gutu/release": ["framework/core/release/src/index.ts"]
-    }
+      "@gutu/cli": [
+        "../../gutu-core/framework/core/cli/src/index.ts"
+      ],
+      "@platform/commands": [
+        "../../gutu-core/framework/core/commands/src/index.ts"
+      ],
+      "@platform/db-drizzle": [
+        "../../gutu-core/framework/core/db-drizzle/src/index.ts"
+      ],
+      "@gutu/ecosystem": [
+        "../../gutu-core/framework/core/ecosystem/src/index.ts"
+      ],
+      "@platform/events": [
+        "../../gutu-core/framework/core/events/src/index.ts"
+      ],
+      "@platform/jobs": [
+        "../../gutu-core/framework/core/jobs/src/index.ts"
+      ],
+      "@gutu/kernel": [
+        "../../gutu-core/framework/core/kernel/src/index.ts"
+      ],
+      "@platform/permissions": [
+        "../../gutu-core/framework/core/permissions/src/index.ts"
+      ],
+      "@platform/kernel": [
+        "../../gutu-core/framework/core/platform-kernel/src/index.ts"
+      ],
+      "@platform/plugin-solver": [
+        "../../gutu-core/framework/core/plugin-solver/src/index.ts"
+      ],
+      "@gutu/release": [
+        "../../gutu-core/framework/core/release/src/index.ts"
+      ],
+      "@platform/schema": [
+        "../../gutu-core/framework/core/schema/src/index.ts"
+      ],
+      "@platform/admin-builders": [
+        "../gutu-lib-admin-builders/framework/libraries/admin-builders/src/index.ts"
+      ],
+      "@platform/admin-contracts": [
+        "../gutu-lib-admin-contracts/framework/libraries/admin-contracts/src/index.ts"
+      ],
+      "@platform/admin-formview": [
+        "../gutu-lib-admin-formview/framework/libraries/admin-formview/src/index.ts"
+      ],
+      "@platform/admin-listview": [
+        "../gutu-lib-admin-listview/framework/libraries/admin-listview/src/index.ts"
+      ],
+      "@platform/admin-reporting": [
+        "../gutu-lib-admin-reporting/framework/libraries/admin-reporting/src/index.ts"
+      ],
+      "@platform/admin-shell-workbench": [
+        "../gutu-lib-admin-shell-workbench/framework/libraries/admin-shell-workbench/src/index.ts"
+      ],
+      "@platform/admin-widgets": [
+        "../gutu-lib-admin-widgets/framework/libraries/admin-widgets/src/index.ts"
+      ],
+      "@platform/ai": [
+        "../gutu-lib-ai/framework/libraries/ai/src/index.ts"
+      ],
+      "@platform/ai-evals": [
+        "../gutu-lib-ai-evals/framework/libraries/ai-evals/src/index.ts"
+      ],
+      "@platform/ai-guardrails": [
+        "../gutu-lib-ai-guardrails/framework/libraries/ai-guardrails/src/index.ts"
+      ],
+      "@platform/ai-mcp": [
+        "framework/libraries/ai-mcp/src/index.ts"
+      ],
+      "@platform/ai-memory": [
+        "../gutu-lib-ai-memory/framework/libraries/ai-memory/src/index.ts"
+      ],
+      "@platform/ai-runtime": [
+        "../gutu-lib-ai-runtime/framework/libraries/ai-runtime/src/index.ts"
+      ],
+      "@platform/analytics": [
+        "../gutu-lib-analytics/framework/libraries/analytics/src/index.ts"
+      ],
+      "@platform/chart": [
+        "../gutu-lib-chart/framework/libraries/chart/src/index.ts"
+      ],
+      "@platform/command-palette": [
+        "../gutu-lib-command-palette/framework/libraries/command-palette/src/index.ts"
+      ],
+      "@platform/communication": [
+        "../gutu-lib-communication/framework/libraries/communication/src/index.ts"
+      ],
+      "@platform/contracts": [
+        "../gutu-lib-contracts/framework/libraries/contracts/src/index.ts"
+      ],
+      "@platform/data-table": [
+        "../gutu-lib-data-table/framework/libraries/data-table/src/index.ts"
+      ],
+      "@platform/editor": [
+        "../gutu-lib-editor/framework/libraries/editor/src/index.tsx"
+      ],
+      "@platform/email-templates": [
+        "../gutu-lib-email-templates/framework/libraries/email-templates/src/index.ts"
+      ],
+      "@platform/form": [
+        "../gutu-lib-form/framework/libraries/form/src/index.ts"
+      ],
+      "@platform/geo": [
+        "../gutu-lib-geo/framework/libraries/geo/src/index.ts"
+      ],
+      "@platform/layout": [
+        "../gutu-lib-layout/framework/libraries/layout/src/index.ts"
+      ],
+      "@platform/payments-core": [
+        "../gutu-lib-payments/framework/libraries/payments-core/src/index.ts"
+      ],
+      "@platform/payments-provider-2c2p": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-2c2p/src/index.ts"
+      ],
+      "@platform/payments-provider-adyen": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-adyen/src/index.ts"
+      ],
+      "@platform/payments-provider-airwallex": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-airwallex/src/index.ts"
+      ],
+      "@platform/payments-provider-alipay": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-alipay/src/index.ts"
+      ],
+      "@platform/payments-provider-amazon-pay": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-amazon-pay/src/index.ts"
+      ],
+      "@platform/payments-provider-amazon-payment-services": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-amazon-payment-services/src/index.ts"
+      ],
+      "@platform/payments-provider-asiapay-paydollar": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-asiapay-paydollar/src/index.ts"
+      ],
+      "@platform/payments-provider-authorize-net": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-authorize-net/src/index.ts"
+      ],
+      "@platform/payments-provider-billplz": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-billplz/src/index.ts"
+      ],
+      "@platform/payments-provider-bluesnap": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-bluesnap/src/index.ts"
+      ],
+      "@platform/payments-provider-braintree": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-braintree/src/index.ts"
+      ],
+      "@platform/payments-provider-buckaroo": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-buckaroo/src/index.ts"
+      ],
+      "@platform/payments-provider-cashfree-payments": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-cashfree-payments/src/index.ts"
+      ],
+      "@platform/payments-provider-ccavenue": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-ccavenue/src/index.ts"
+      ],
+      "@platform/payments-provider-checkout-com": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-checkout-com/src/index.ts"
+      ],
+      "@platform/payments-provider-cloudpayments": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-cloudpayments/src/index.ts"
+      ],
+      "@platform/payments-provider-conekta": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-conekta/src/index.ts"
+      ],
+      "@platform/payments-provider-cybersource": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-cybersource/src/index.ts"
+      ],
+      "@platform/payments-provider-dlocal": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-dlocal/src/index.ts"
+      ],
+      "@platform/payments-provider-doku": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-doku/src/index.ts"
+      ],
+      "@platform/payments-provider-dwolla": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-dwolla/src/index.ts"
+      ],
+      "@platform/payments-provider-easebuzz": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-easebuzz/src/index.ts"
+      ],
+      "@platform/payments-provider-ebanx": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-ebanx/src/index.ts"
+      ],
+      "@platform/payments-provider-ecommpay": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-ecommpay/src/index.ts"
+      ],
+      "@platform/payments-provider-eway": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-eway/src/index.ts"
+      ],
+      "@platform/payments-provider-eximbay": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-eximbay/src/index.ts"
+      ],
+      "@platform/payments-provider-fincode-bygmo": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-fincode-bygmo/src/index.ts"
+      ],
+      "@platform/payments-provider-fiserv": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-fiserv/src/index.ts"
+      ],
+      "@platform/payments-provider-fiuu": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-fiuu/src/index.ts"
+      ],
+      "@platform/payments-provider-flutterwave": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-flutterwave/src/index.ts"
+      ],
+      "@platform/payments-provider-fondy": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-fondy/src/index.ts"
+      ],
+      "@platform/payments-provider-forte": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-forte/src/index.ts"
+      ],
+      "@platform/payments-provider-global-payments": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-global-payments/src/index.ts"
+      ],
+      "@platform/payments-provider-helcim": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-helcim/src/index.ts"
+      ],
+      "@platform/payments-provider-hitpay": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-hitpay/src/index.ts"
+      ],
+      "@platform/payments-provider-hyperpay": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-hyperpay/src/index.ts"
+      ],
+      "@platform/payments-provider-instamojo": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-instamojo/src/index.ts"
+      ],
+      "@platform/payments-provider-intasend": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-intasend/src/index.ts"
+      ],
+      "@platform/payments-provider-ipay88": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-ipay88/src/index.ts"
+      ],
+      "@platform/payments-provider-iyzico": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-iyzico/src/index.ts"
+      ],
+      "@platform/payments-provider-klarna": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-klarna/src/index.ts"
+      ],
+      "@platform/payments-provider-komoju": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-komoju/src/index.ts"
+      ],
+      "@platform/payments-provider-kushki": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-kushki/src/index.ts"
+      ],
+      "@platform/payments-provider-liqpay": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-liqpay/src/index.ts"
+      ],
+      "@platform/payments-provider-m-pesa-daraja": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-m-pesa-daraja/src/index.ts"
+      ],
+      "@platform/payments-provider-mercado-pago": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-mercado-pago/src/index.ts"
+      ],
+      "@platform/payments-provider-midtrans": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-midtrans/src/index.ts"
+      ],
+      "@platform/payments-provider-mollie": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-mollie/src/index.ts"
+      ],
+      "@platform/payments-provider-monei": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-monei/src/index.ts"
+      ],
+      "@platform/payments-provider-moneris": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-moneris/src/index.ts"
+      ],
+      "@platform/payments-provider-mtn-momo": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-mtn-momo/src/index.ts"
+      ],
+      "@platform/payments-provider-multisafepay": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-multisafepay/src/index.ts"
+      ],
+      "@platform/payments-provider-myfatoorah": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-myfatoorah/src/index.ts"
+      ],
+      "@platform/payments-provider-nexi-checkout-nets": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-nexi-checkout-nets/src/index.ts"
+      ],
+      "@platform/payments-provider-nmi": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-nmi/src/index.ts"
+      ],
+      "@platform/payments-provider-nuvei": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-nuvei/src/index.ts"
+      ],
+      "@platform/payments-provider-openpay": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-openpay/src/index.ts"
+      ],
+      "@platform/payments-provider-opn-payments-omise": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-opn-payments-omise/src/index.ts"
+      ],
+      "@platform/payments-provider-ozow": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-ozow/src/index.ts"
+      ],
+      "@platform/payments-provider-pagar-me": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-pagar-me/src/index.ts"
+      ],
+      "@platform/payments-provider-pagbank-pagseguro": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-pagbank-pagseguro/src/index.ts"
+      ],
+      "@platform/payments-provider-pay-jp": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-pay-jp/src/index.ts"
+      ],
+      "@platform/payments-provider-payfast": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-payfast/src/index.ts"
+      ],
+      "@platform/payments-provider-payjunction": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-payjunction/src/index.ts"
+      ],
+      "@platform/payments-provider-paymob": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-paymob/src/index.ts"
+      ],
+      "@platform/payments-provider-paymongo": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-paymongo/src/index.ts"
+      ],
+      "@platform/payments-provider-paypal-checkout": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-paypal-checkout/src/index.ts"
+      ],
+      "@platform/payments-provider-payrexx": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-payrexx/src/index.ts"
+      ],
+      "@platform/payments-provider-paysafe": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-paysafe/src/index.ts"
+      ],
+      "@platform/payments-provider-paysera": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-paysera/src/index.ts"
+      ],
+      "@platform/payments-provider-paystack": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-paystack/src/index.ts"
+      ],
+      "@platform/payments-provider-paytabs": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-paytabs/src/index.ts"
+      ],
+      "@platform/payments-provider-paytm-payment-gateway": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-paytm-payment-gateway/src/index.ts"
+      ],
+      "@platform/payments-provider-paytrail": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-paytrail/src/index.ts"
+      ],
+      "@platform/payments-provider-payu-india": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-payu-india/src/index.ts"
+      ],
+      "@platform/payments-provider-peach-payments": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-peach-payments/src/index.ts"
+      ],
+      "@platform/payments-provider-pesapal": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-pesapal/src/index.ts"
+      ],
+      "@platform/payments-provider-phonepe-payment-gateway": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-phonepe-payment-gateway/src/index.ts"
+      ],
+      "@platform/payments-provider-placetopay": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-placetopay/src/index.ts"
+      ],
+      "@platform/payments-provider-przelewy24": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-przelewy24/src/index.ts"
+      ],
+      "@platform/payments-provider-rapyd": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-rapyd/src/index.ts"
+      ],
+      "@platform/payments-provider-razorpay": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-razorpay/src/index.ts"
+      ],
+      "@platform/payments-provider-redsys": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-redsys/src/index.ts"
+      ],
+      "@platform/payments-provider-senangpay": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-senangpay/src/index.ts"
+      ],
+      "@platform/payments-provider-shift4": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-shift4/src/index.ts"
+      ],
+      "@platform/payments-provider-square": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-square/src/index.ts"
+      ],
+      "@platform/payments-provider-stripe": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-stripe/src/index.ts"
+      ],
+      "@platform/payments-provider-tap-payments": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-tap-payments/src/index.ts"
+      ],
+      "@platform/payments-provider-toss-payments": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-toss-payments/src/index.ts"
+      ],
+      "@platform/payments-provider-toyyibpay": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-toyyibpay/src/index.ts"
+      ],
+      "@platform/payments-provider-tpay": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-tpay/src/index.ts"
+      ],
+      "@platform/payments-provider-transbank": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-transbank/src/index.ts"
+      ],
+      "@platform/payments-provider-vipps-mobilepay": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-vipps-mobilepay/src/index.ts"
+      ],
+      "@platform/payments-provider-viva-com": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-viva-com/src/index.ts"
+      ],
+      "@platform/payments-provider-wechat-pay": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-wechat-pay/src/index.ts"
+      ],
+      "@platform/payments-provider-wompi": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-wompi/src/index.ts"
+      ],
+      "@platform/payments-provider-worldline": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-worldline/src/index.ts"
+      ],
+      "@platform/payments-provider-worldpay": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-worldpay/src/index.ts"
+      ],
+      "@platform/payments-provider-xendit": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-xendit/src/index.ts"
+      ],
+      "@platform/payments-provider-yookassa": [
+        "../gutu-lib-payments/framework/libraries/payments-provider-yookassa/src/index.ts"
+      ],
+      "@platform/query": [
+        "../gutu-lib-query/framework/libraries/query/src/index.ts"
+      ],
+      "@platform/router": [
+        "../gutu-lib-router/framework/libraries/router/src/index.ts"
+      ],
+      "@platform/search": [
+        "../gutu-lib-search/framework/libraries/search/src/index.ts"
+      ],
+      "@platform/telemetry-ui": [
+        "../gutu-lib-telemetry-ui/framework/libraries/telemetry-ui/src/index.ts"
+      ],
+      "@platform/ui": [
+        "../gutu-lib-ui/framework/libraries/ui/src/index.ts"
+      ],
+      "@platform/ui-editor": [
+        "../gutu-lib-ui-editor/framework/libraries/ui-editor/src/index.ts"
+      ],
+      "@platform/ui-form": [
+        "../gutu-lib-ui-form/framework/libraries/ui-form/src/index.ts"
+      ],
+      "@platform/ui-kit": [
+        "../gutu-lib-ui-kit/framework/libraries/ui-kit/src/index.ts"
+      ],
+      "@platform/ui-query": [
+        "../gutu-lib-ui-query/framework/libraries/ui-query/src/index.ts"
+      ],
+      "@platform/ui-router": [
+        "../gutu-lib-ui-router/framework/libraries/ui-router/src/index.ts"
+      ],
+      "@platform/ui-shell": [
+        "../gutu-lib-ui-shell/framework/libraries/ui-shell/src/index.ts"
+      ],
+      "@platform/ui-table": [
+        "../gutu-lib-ui-table/framework/libraries/ui-table/src/index.ts"
+      ],
+      "@platform/ui-zone-next": [
+        "../gutu-lib-ui-zone-next/framework/libraries/ui-zone-next/src/index.ts"
+      ],
+      "@platform/ui-zone-static": [
+        "../gutu-lib-ui-zone-static/framework/libraries/ui-zone-static/src/index.ts"
+      ],
+      "@plugins/admin-shell-workbench": [
+        "../../plugins/gutu-plugin-admin-shell-workbench/framework/builtin-plugins/admin-shell-workbench/src/index.ts"
+      ],
+      "@plugins/ai-core": [
+        "../../plugins/gutu-plugin-ai-core/framework/builtin-plugins/ai-core/src/index.ts"
+      ],
+      "@plugins/ai-evals": [
+        "../../plugins/gutu-plugin-ai-evals/framework/builtin-plugins/ai-evals/src/index.ts"
+      ],
+      "@plugins/ai-rag": [
+        "../../plugins/gutu-plugin-ai-rag/framework/builtin-plugins/ai-rag/src/index.ts"
+      ],
+      "@plugins/ai-skills-core": [
+        "../../plugins/gutu-plugin-ai-skills-core/framework/builtin-plugins/ai-skills-core/src/index.ts"
+      ],
+      "@plugins/audit-core": [
+        "../../plugins/gutu-plugin-audit-core/framework/builtin-plugins/audit-core/src/index.ts"
+      ],
+      "@plugins/auth-core": [
+        "../../plugins/gutu-plugin-auth-core/framework/builtin-plugins/auth-core/src/index.ts"
+      ],
+      "@plugins/automation-core": [
+        "../../plugins/gutu-plugin-automation-core/framework/builtin-plugins/automation-core/src/index.ts"
+      ],
+      "@plugins/booking-core": [
+        "../../plugins/gutu-plugin-booking-core/framework/builtin-plugins/booking-core/src/index.ts"
+      ],
+      "@plugins/community-core": [
+        "../../plugins/gutu-plugin-community-core/framework/builtin-plugins/community-core/src/index.ts"
+      ],
+      "@plugins/company-builder-core": [
+        "../../plugins/gutu-plugin-company-builder-core/framework/builtin-plugins/company-builder-core/src/index.ts"
+      ],
+      "@plugins/content-core": [
+        "../../plugins/gutu-plugin-content-core/framework/builtin-plugins/content-core/src/index.ts"
+      ],
+      "@plugins/dashboard-core": [
+        "../../plugins/gutu-plugin-dashboard-core/framework/builtin-plugins/dashboard-core/src/index.ts"
+      ],
+      "@plugins/document-core": [
+        "../../plugins/gutu-plugin-document-core/framework/builtin-plugins/document-core/src/index.ts"
+      ],
+      "@plugins/execution-workspaces-core": [
+        "../../plugins/gutu-plugin-execution-workspaces-core/framework/builtin-plugins/execution-workspaces-core/src/index.ts"
+      ],
+      "@plugins/files-core": [
+        "../../plugins/gutu-plugin-files-core/framework/builtin-plugins/files-core/src/index.ts"
+      ],
+      "@plugins/forms-core": [
+        "../../plugins/gutu-plugin-forms-core/framework/builtin-plugins/forms-core/src/index.ts"
+      ],
+      "@plugins/integration-core": [
+        "../../plugins/gutu-plugin-integration-core/framework/builtin-plugins/integration-core/src/index.ts"
+      ],
+      "@plugins/issues-core": [
+        "../../plugins/gutu-plugin-issues-core/framework/builtin-plugins/issues-core/src/index.ts"
+      ],
+      "@plugins/jobs-core": [
+        "../../plugins/gutu-plugin-jobs-core/framework/builtin-plugins/jobs-core/src/index.ts"
+      ],
+      "@plugins/knowledge-core": [
+        "../../plugins/gutu-plugin-knowledge-core/framework/builtin-plugins/knowledge-core/src/index.ts"
+      ],
+      "@plugins/notifications-core": [
+        "../../plugins/gutu-plugin-notifications-core/framework/builtin-plugins/notifications-core/src/index.ts"
+      ],
+      "@plugins/org-tenant-core": [
+        "../../plugins/gutu-plugin-org-tenant-core/framework/builtin-plugins/org-tenant-core/src/index.ts"
+      ],
+      "@plugins/page-builder-core": [
+        "../../plugins/gutu-plugin-page-builder-core/framework/builtin-plugins/page-builder-core/src/index.ts"
+      ],
+      "@plugins/payments-core": [
+        "../../plugins/gutu-plugin-payments-core/framework/builtin-plugins/payments-core/src/index.ts"
+      ],
+      "@plugins/portal-core": [
+        "../../plugins/gutu-plugin-portal-core/framework/builtin-plugins/portal-core/src/index.ts"
+      ],
+      "@plugins/role-policy-core": [
+        "../../plugins/gutu-plugin-role-policy-core/framework/builtin-plugins/role-policy-core/src/index.ts"
+      ],
+      "@plugins/runtime-bridge-core": [
+        "../../plugins/gutu-plugin-runtime-bridge-core/framework/builtin-plugins/runtime-bridge-core/src/index.ts"
+      ],
+      "@plugins/search-core": [
+        "../../plugins/gutu-plugin-search-core/framework/builtin-plugins/search-core/src/index.ts"
+      ],
+      "@plugins/template-core": [
+        "../../plugins/gutu-plugin-template-core/framework/builtin-plugins/template-core/src/index.ts"
+      ],
+      "@plugins/user-directory": [
+        "../../plugins/gutu-plugin-user-directory/framework/builtin-plugins/user-directory/src/index.ts"
+      ],
+      "@plugins/workflow-core": [
+        "../../plugins/gutu-plugin-workflow-core/framework/builtin-plugins/workflow-core/src/index.ts"
+      ],
+      "@apps/docs": [
+        "../../apps/gutu-app-docs/apps/docs/src/index.ts"
+      ],
+      "@apps/examples": [
+        "../../apps/gutu-app-examples/apps/examples/src/index.ts"
+      ],
+      "@apps/platform-dev-console": [
+        "../../apps/gutu-app-platform-dev-console/apps/platform-dev-console/src/index.ts"
+      ],
+      "@apps/playground": [
+        "../../apps/gutu-app-playground/apps/playground/src/index.ts"
+      ]
+    },
+    "jsx": "react-jsx",
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "typeRoots": [
+      "../../node_modules",
+      "../../node_modules/@types"
+    ]
   }
 }

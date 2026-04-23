@@ -5,7 +5,7 @@
 ## Shipped Now
 
 - Publishes 0 public modules from `@platform/ai-mcp`.
-- Exports 20 named symbols through the public entrypoint, including `packageId`, `packageDisplayName`, `packageDescription`, `defineMcpServer`, `defineMcpClientConnector`, `deriveMcpToolDescriptor`, and more.
+- Exports 28 named symbols through the public entrypoint, including `packageId`, `packageDisplayName`, `packageDescription`, `defineMcpServer`, `defineMcpClientConnector`, `filterMcpTools`, and more.
 - Keeps the public surface headless and import-driven rather than requiring a UI runtime.
 - Verification lanes present: Build+Typecheck+Lint+Test.
 

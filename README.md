@@ -24,7 +24,7 @@ MCP descriptors and connectors derived from framework actions, resources, and pr
 ## What It Does Now
 
 - Publishes 0 public modules from `@platform/ai-mcp`.
-- Exports 20 named symbols through the public entrypoint, including `packageId`, `packageDisplayName`, `packageDescription`, `defineMcpServer`, `defineMcpClientConnector`, `deriveMcpToolDescriptor`, and more.
+- Exports 28 named symbols through the public entrypoint, including `packageId`, `packageDisplayName`, `packageDescription`, `defineMcpServer`, `defineMcpClientConnector`, `filterMcpTools`, and more.
 - Keeps the public surface headless and import-driven rather than requiring a UI runtime.
 - Verification lanes present: Build+Typecheck+Lint+Test.
 
@@ -35,7 +35,7 @@ MCP descriptors and connectors derived from framework actions, resources, and pr
 Why this tier:
 - Group: **AI Foundation**
 - Public modules: 0
-- Named exports: 20
+- Named exports: 28
 - Test files: 2
 - Contract lane: not present
 
@@ -45,6 +45,7 @@ Why this tier:
 | --- | --- |
 | Package ID | `ai-mcp` |
 | Import Name | `@platform/ai-mcp` |
+| Canonical Namespace Target | `@gutu/ai-mcp` |
 | UI Surface | Headless typed exports |
 | Consumption Model | Imports + typed helpers |
 | Verification | Build+Typecheck+Lint+Test |
@@ -54,17 +55,25 @@ Why this tier:
 | Field | Value |
 | --- | --- |
 | Package Name | `@platform/ai-mcp` |
+| Canonical Namespace Target | `@gutu/ai-mcp` |
+| Legacy Compatibility IDs | `@platform/ai-mcp` |
 | Direct Dependencies | `@platform/ai`, `@platform/schema` |
 | Peer Dependencies | None |
 | React Runtime | No |
 | Workspace Requirement | Compatible Gutu workspace required |
+
+## Namespace Policy
+
+- `@gutu/*` is the canonical public framework namespace for new work.
+- This repo currently publishes `@platform/ai-mcp` as the legacy compatibility package id while the migration to `@gutu/ai-mcp` is completed.
+- Catalog metadata carries the canonical target id so dashboards, docs, and future tooling can present one uniform Gutu namespace without breaking current consumers.
 
 ## Capability Matrix
 
 | Capability | Count / Mode | Notes |
 | --- | --- | --- |
 | Public Modules | 0 | No module re-exports detected |
-| Named Exports | 20 | `packageId`, `packageDisplayName`, `packageDescription`, `defineMcpServer`, `defineMcpClientConnector`, `deriveMcpToolDescriptor`, `deriveMcpResourceDescriptor`, `createMcpServerFromContracts` |
+| Named Exports | 28 | `packageId`, `packageDisplayName`, `packageDescription`, `defineMcpServer`, `defineMcpClientConnector`, `filterMcpTools`, `planMcpConnection`, `createSchemaCacheEntry` |
 | UI Surface | Headless typed exports | Headless typed helpers |
 | Tests | 2 | Build+Typecheck+Lint+Test |
 

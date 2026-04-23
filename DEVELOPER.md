@@ -35,6 +35,7 @@ Provides MCP-oriented helper contracts so the rest of the stack can compose AI t
 | Package ID | `ai-mcp` |
 | Display Name | AI MCP |
 | Import Name | `@platform/ai-mcp` |
+| Canonical Namespace Target | `@gutu/ai-mcp` |
 | Version | `0.1.0` |
 | UI Surface | Headless typed exports |
 | Consumption Model | Imports + typed helpers |
@@ -48,6 +49,7 @@ Provides MCP-oriented helper contracts so the rest of the stack can compose AI t
 | Dev Dependencies | None |
 | React Runtime | No |
 | Workspace Scoped | Yes |
+| Legacy Compatibility IDs | `@platform/ai-mcp` |
 
 ### Dependency interpretation
 
@@ -65,7 +67,7 @@ Provides MCP-oriented helper contracts so the rest of the stack can compose AI t
 
 | Source File | Exported Symbols |
 | --- | --- |
-| `index.ts` | `packageId`, `packageDisplayName`, `packageDescription`, `defineMcpServer`, `defineMcpClientConnector`, `deriveMcpToolDescriptor`, `deriveMcpResourceDescriptor`, `createMcpServerFromContracts` |
+| `index.ts` | `packageId`, `packageDisplayName`, `packageDescription`, `defineMcpServer`, `defineMcpClientConnector`, `filterMcpTools`, `planMcpConnection`, `createSchemaCacheEntry` |
 
 ## React, UI, And Extensibility Notes
 
@@ -143,7 +145,7 @@ console.log(typeof defineMcpServer);
 ### Current truth
 
 - Publishes 0 public modules from `@platform/ai-mcp`.
-- Exports 20 named symbols through the public entrypoint, including `packageId`, `packageDisplayName`, `packageDescription`, `defineMcpServer`, `defineMcpClientConnector`, `deriveMcpToolDescriptor`, and more.
+- Exports 28 named symbols through the public entrypoint, including `packageId`, `packageDisplayName`, `packageDescription`, `defineMcpServer`, `defineMcpClientConnector`, `filterMcpTools`, and more.
 - Keeps the public surface headless and import-driven rather than requiring a UI runtime.
 - Verification lanes present: Build+Typecheck+Lint+Test.
 
